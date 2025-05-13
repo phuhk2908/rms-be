@@ -13,21 +13,25 @@ import {
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { IngredientsService } from './ingredients.service';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('ingredients')
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
 
+  @Public()
   @Post()
   create(@Body() createIngredientDto: CreateIngredientDto) {
     return this.ingredientsService.create(createIngredientDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.ingredientsService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.ingredientsService.findOne(id);
@@ -46,11 +50,13 @@ export class IngredientsController {
     return this.ingredientsService.remove(id);
   }
 
+  @Public()
   @Get(':id/stock')
   getCurrentStock(@Param('id', ParseUUIDPipe) id: string) {
     return this.ingredientsService.getCurrentStock(id);
   }
 
+  @Public()
   @Get(':id/recipes')
   getRecipesUsingIngredient(@Param('id', ParseUUIDPipe) id: string) {
     return this.ingredientsService.getRecipesUsingIngredient(id);

@@ -12,26 +12,31 @@ import { RecipesService } from './recipes.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { AddIngredientToRecipeDto } from './dto/add-ingredient-to-recipe.dto';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('recipes')
 export class RecipesController {
   constructor(private readonly recipesService: RecipesService) {}
-
+  
+  @Public()
   @Post()
   create(@Body() createRecipeDto: CreateRecipeDto) {
     return this.recipesService.create(createRecipeDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.recipesService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.recipesService.findOne(id);
   }
 
+  @Public()
   @Get('menu-item/:menuItemId')
   findByMenuItem(@Param('menuItemId', ParseUUIDPipe) menuItemId: string) {
     return this.recipesService.findByMenuItem(menuItemId);
@@ -50,6 +55,7 @@ export class RecipesController {
     return this.recipesService.remove(id);
   }
 
+  @Public()
   @Post(':id/ingredients')
   addIngredient(
     @Param('id', ParseUUIDPipe) id: string,
@@ -66,6 +72,7 @@ export class RecipesController {
     return this.recipesService.removeIngredient(recipeId, ingredientId);
   }
 
+  @Public()
   @Get(':id/cost')
   calculateCost(@Param('id', ParseUUIDPipe) id: string) {
     return this.recipesService.calculateCost(id);

@@ -17,16 +17,19 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderStatus } from '../../shared/enums/order-status.enum';
 import { OrderItemStatus } from '../../shared/enums/order-item-status.enum';
 import { CreatePaymentDto } from '../payments/dto/create-payment.dto';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
+  @Public()
   @Post()
   create(@Body() createOrderDto: CreateOrderDto, @Request() req) {
     return this.ordersService.create(createOrderDto, req.user.id);
   }
 
+  @Public()
   @Get()
   findAll(@Query('status') status?: OrderStatus) {
     if (status) {
@@ -35,11 +38,13 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.ordersService.findOne(id);
   }
 
+  @Public()
   @Get('table/:tableId')
   findByTable(@Param('tableId', ParseUUIDPipe) tableId: string) {
     return this.ordersService.findByTable(tableId);
@@ -70,11 +75,13 @@ export class OrdersController {
     return this.ordersService.updateOrderItemStatus(orderId, itemId, status);
   }
 
+  @Public()
   @Get(':id/total')
   calculateTotal(@Param('id', ParseUUIDPipe) id: string) {
     return this.ordersService.calculateTotal(id);
   }
 
+  @Public()
   @Post(':id/payments')
   addPayment(
     @Param('id', ParseUUIDPipe) id: string,
